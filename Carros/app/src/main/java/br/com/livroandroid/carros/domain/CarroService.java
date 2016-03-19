@@ -3,11 +3,15 @@ package br.com.livroandroid.carros.domain;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +24,13 @@ public class CarroService {
 
     public static List<Carro> getCarros(Context context, int tipo) throws IOException {
         String json = readFile(context, tipo);
-        List<Carro> carros = parserJSON(context, json);
+//        List<Carro> carros = parserJSON(context, json);
+        Gson gson = new Gson();
+
+        Type listType = new TypeToken<ArrayList<Carro>>() {
+        }.getType();
+        List<Carro> carros = gson.fromJson(json, listType);
+
         return carros;
     }
 
