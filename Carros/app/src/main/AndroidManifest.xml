@@ -3,6 +3,8 @@
     package="br.com.livroandroid.carros"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".CarrosApplication"
         android:allowBackup="true"
