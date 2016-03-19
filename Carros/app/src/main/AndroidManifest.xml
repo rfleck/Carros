@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="br.com.livroandroid.carros"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest package="br.com.livroandroid.carros"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -23,6 +22,7 @@
         </activity>
         <activity
             android:name=".activity.CarrosActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -30,10 +30,10 @@
         </activity>
         <activity
             android:name=".activity.CarroActivity"
-            android:parentActivityName=".activity.MainActivity">
+            android:parentActivityName=".activity.CarrosActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity"/>
+                android:value=".activity.CarrosActivity"/>
         </activity>
     </application>
 
