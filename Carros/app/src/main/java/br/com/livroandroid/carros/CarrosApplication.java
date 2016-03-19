@@ -3,12 +3,22 @@ package br.com.livroandroid.carros;
 import android.app.Application;
 import android.util.Log;
 
+import com.squareup.otto.Bus;
+
 public class CarrosApplication extends Application {
     private static final String TAG = "CarrosApplication";
     private static CarrosApplication instance = null;
+
+    private Bus bus = new Bus();
+
+    public Bus getBus() {
+        return bus;
+    }
+
     public static CarrosApplication getInstance() {
         return instance; // Singleton
     }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -16,6 +26,7 @@ public class CarrosApplication extends Application {
 // Salva a instância para termos acesso como Singleton
         instance = this;
     }
+
     @Override
     public void onTerminate() {
         super.onTerminate();

@@ -18,19 +18,31 @@ public class CarroService {
             URL = "http://livrowebservices.com.br/rest/carros/tipo/%s";
 
     public static List<Carro> getCarros(Context context, int tipo) throws IOException {
-        String tipoString = getTipo(tipo);
-        String url = String.format(URL, tipoString);
+        List<Carro> carros = null;
+        if (tipo == R.string.favoritos) {
+// Consulta no banco de dados
+            CarroDB db = new CarroDB(context);
+            carros = db.findAll();
+        } else {
 
-        HttpHelper http = new HttpHelper();
-        String json = http.doGet(url);
+            String tipoString = getTipo(tipo);
+            String url = String.format(URL, tipoString);
 
-        Gson gson = new Gson();
+            HttpHelper http = new HttpHelper();
+            String json = http.doGet(url);
 
-        Type listType = new TypeToken<ArrayList<Carro>>() {
-        }.getType();
-        List<Carro> carros = gson.fromJson(json, listType);
+            Gson gson = new Gson();
 
+            Type listType = new TypeToken<ArrayList<Carro>>() {
+            }.getType();
+            carros = gson.fromJson(json, listType);
+
+            for (Carro c: carros) {
+                c.id = 0L;
+            }
+        }
         return carros;
+
     }
 
     // Converte a constante para string, para criar a URL do web service

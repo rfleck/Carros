@@ -26,12 +26,13 @@ public class MainActivity extends BaseActivity {
     private void setupViewPagerTabs() {
 // ViewPager
         final ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        viewPager.setOffscreenPageLimit(2);
+        viewPager.setOffscreenPageLimit(3);
         viewPager.setAdapter(new TabsAdapter(getContext(), getSupportFragmentManager()));
 // Tabs
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 // Cria as tabs com o mesmo adapter utilizado pelo ViewPager
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         int cor = ContextCompat.getColor(getContext(), R.color.white);
 // Cor branca no texto (o fundo azul foi definido no layout)
         tabLayout.setTabTextColors(cor, cor);

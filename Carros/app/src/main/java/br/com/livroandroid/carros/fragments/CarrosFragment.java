@@ -3,6 +3,7 @@ package br.com.livroandroid.carros.fragments;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,8 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.squareup.otto.Subscribe;
+
 import java.util.List;
 
+import br.com.livroandroid.carros.CarrosApplication;
 import br.com.livroandroid.carros.R;
 import br.com.livroandroid.carros.activity.CarroActivity;
 import br.com.livroandroid.carros.adapter.CarroAdapter;
@@ -43,6 +47,8 @@ public class CarrosFragment extends BaseFragment {
 // Lê o tipo dos argumentos
             this.tipo = getArguments().getInt("tipo");
         }
+        // Registra a classe para receber eventos
+        CarrosApplication.getInstance().getBus().register(this);
     }
 
     @Override
@@ -56,17 +62,23 @@ public class CarrosFragment extends BaseFragment {
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        startTask("lista", taskListaCarros(), R.id.progress);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 
-        startTask("lista", taskListaCarros(), R.id.progress);
+
     }
 
     private TaskListener taskListaCarros() {
         return new TaskListener<List<Carro>>() {
             @Override
             public List<Carro> execute() throws Exception {
-                Thread.sleep(3000);
                 List<Carro> carros = CarroService.getCarros(getContext(), tipo);
                 return carros;
             }
@@ -109,5 +121,16 @@ public class CarrosFragment extends BaseFragment {
         };
     }
 
+    @Subscribe
+    public void onBusAtualizarListaCarros(String refresh) {
+        // Recebeu o evento, atualiza a lista
+        startTask("lista", taskListaCarros(), R.id.progress);
+    }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+// Cancela o recebimento de eventos
+        CarrosApplication.getInstance().getBus().unregister(this);
+    }
 }
