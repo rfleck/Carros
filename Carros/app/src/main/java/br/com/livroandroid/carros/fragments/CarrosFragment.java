@@ -8,8 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.List;
 
 import br.com.livroandroid.carros.R;
@@ -62,27 +62,32 @@ public class CarrosFragment extends BaseFragment {
     }
 
     private void taskCarros() {
-// Busca os carros pelo tipo
-        this.carros = CarroService.getCarros(getContext(), tipo);
-        // É aqui que utiliza o adapter. O adapter fornece o conteúdo para a lista
-        recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
+        try {
+            this.carros = CarroService.getCarros(getContext(), tipo);
+            recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Da mesma forma que tratamos o evento de clique em um botão (OnClickListener)
-    // Vamos tratar o evento de clique na lista
-    // A diferença é que a interface CarroAdapter.CarroOnClickListener nós mesmo criamos
+// Vamos tratar o evento de clique na lista
+// A diferença é que a interface CarroAdapter.CarroOnClickListener nós mesmo criamos
     private CarroAdapter.CarroOnClickListener onClickCarro() {
         return new CarroAdapter.CarroOnClickListener() {
             @Override
             public void onClickCarro(View view, int idx) {
                 // Carro selecionado
                 Carro c = carros.get(idx);
-                // Mostra um alerta rápido com um toast
+// Mostra um alerta rápido com um toast
                 //Toast.makeText(getContext(), "Carro: " + c.nome, Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent(getContext(), CarroActivity.class);
-                intent.putExtra("carro",c);
+                intent.putExtra("carro", c);
                 startActivity(intent);
             }
         };
     }
+
+
 }
