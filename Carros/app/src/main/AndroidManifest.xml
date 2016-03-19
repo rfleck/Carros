@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="br.com.livroandroid.carros"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest
+    package="br.com.livroandroid.carros"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:name=".CarrosApplication"
@@ -18,7 +19,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.CarrosActivity">
+        <activity
+            android:name=".activity.CarrosActivity"
+            android:parentActivityName=".activity.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity"/>
         </activity>
     </application>
 
