@@ -1,5 +1,6 @@
 package br.com.livroandroid.carros.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -9,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.io.IOException;
 import java.util.List;
 
 import br.com.livroandroid.carros.R;
@@ -25,6 +25,7 @@ public class CarrosFragment extends BaseFragment {
     private int tipo;
     // Lista de carros
     private List<Carro> carros;
+    private ProgressDialog progress;
 
     // Método para instanciar esse fragment pelo tipo
     public static CarrosFragment newInstance(int tipo) {
@@ -58,17 +59,36 @@ public class CarrosFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
-        taskCarros();
+        startTask("lista", taskListaCarros(), R.id.progress);
     }
 
-    private void taskCarros() {
-        try {
-            this.carros = CarroService.getCarros(getContext(), tipo);
-            recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private TaskListener taskListaCarros() {
+        return new TaskListener<List<Carro>>() {
+            @Override
+            public List<Carro> execute() throws Exception {
+                Thread.sleep(3000);
+                List<Carro> carros = CarroService.getCarros(getContext(), tipo);
+                return carros;
+            }
+
+            @Override
+            public void updateView(List<Carro> carros) {
+                CarrosFragment.this.carros = carros;
+                recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
+            }
+
+            @Override
+            public void onError(Exception exception) {
+
+            }
+
+            @Override
+            public void onCancelled(String cod) {
+
+            }
+        };
     }
+
 
     // Da mesma forma que tratamos o evento de clique em um botão (OnClickListener)
 // Vamos tratar o evento de clique na lista
