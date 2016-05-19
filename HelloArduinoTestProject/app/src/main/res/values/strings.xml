@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">HelloArduinoTestProject</string>
+    <string name="Conectar">Conectar</string>
+    <string name="Ligar">Ligar</string>
+    <string name="Desligar">Desligar</string>
+    <string name="Piscar">Piscar</string>
+    <string name="Desconectar">Desconectar</string>
+</resources>

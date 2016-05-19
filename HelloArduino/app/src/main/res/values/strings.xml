@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">HelloArduino</string>
+    <string name="Conectar">Conectar</string>
+    <string name="Piscar">Piscar</string>
+    <string name="Desligar">Desligar</string>
+    <string name="Ligar">Ligar</string>
+</resources>
